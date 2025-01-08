@@ -1,29 +1,36 @@
-export const Envelope = (name, amount) => {
+class Envelope {
+    constructor(name, amount) {
         this._name = name;
         this._amount = amount;
-    }   
-    Envelope.name = () => {
+    }
+    get name() {
         return this._name;
     }
-    Envelope.amount = () => {
+    set name(name) {
+        return this._name;
+    }
+
+    get amount() {
         return this._amount;
     }
-    Envelope.addAmount = (amount) => {
-        if(!isNumber(amount)) {
+    addAmount(amount) {
+        if (!isNumber(amount)) {
             throw new Error("Invalid Input, amount must be a number");
         }
         this._amount += amount;
         return this._amount;
     }
-    Envelope.removeAmount = (amount) => {
-        if(!isNumber(amount)) {
+    removeAmount(amount) {
+        if (!isNumber(amount)) {
             throw new Error("Invalid Input, amount must be a number");
         }
-        if(this._amount - amount < 0) {
+        if (this._amount - amount < 0) {
             throw new Error("Envelope can't have a negative amount");
         }
         this._amount -= amount;
         return this._amount;
     }
-    Envelope.persist = () => {
+    persist() {
     }
+}
+module.exports = Envelope;
