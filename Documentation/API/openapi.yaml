@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Personal Budget
+  version: 1.0.0
+  description: Exemple API for codecademy peronal budget project
+paths:
+  /envelopes:
+    summary: Entry point for all envelopes objects
+    description: allow to retrive all envelopes objects
+    get:
+      summary: Retrive list of all envelopes objects
+      description: List of envelopes object in json
+      operationId: get_envelopes
+      responses:
+        '200':
+          description: A list of envelopes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/envelope'
+    post:
+      summary: add new envelope
+      description: add a new envelope to the database
+      operationId: post_envelopes
+      responses:
+        default:
+          description: Default error sample response
+  /envelopes/{name}:
+    summary: Entry point for singular envelopes object
+    get:
+      summary: Retrive an envelope objects
+      description: an envelope
+      operationId: get_envelope
+      responses:
+        '200':
+          description: An envelope.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envelope'
+    put:
+      summary: Change envelope name
+      description: rename envelope
+      operationId: put_envelope
+      responses:
+        '200':
+          description: name succesfuly changed.
+        '500':
+          description: name not changed.
+    delete:
+      summary: Delete envelope
+      description: rename envelope
+      operationId: delete_envelope
+      responses:
+        '200':
+          description: succesfuly deleted.
+        '500':
+          description: deletion failured.
+    parameters:
+      - name: name
+        in: path
+        description: name of the envelope
+        required: true
+        schema:
+          type: string
+  /envelopes/{name}/trasfer/{to}/{amount}:
+    summary: Entry point for transfer between envelopes
+    put:
+      summary: add amount to envelope
+      description: rename envelope
+      operationId: put_transfer_envelope
+      responses:
+        '200':
+          description: amount modified.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/envelope'
+        '500':
+          description: amount not modified.
+    parameters:
+      - name: name
+        in: path
+        description: name of the source envelope
+        required: true
+        schema:
+          type: string
+      - name: to
+        in: path
+        description: name of the destination envelope
+        required: true
+        schema:
+          type: string
+      - name: amount
+        in: path
+        description: amount to transfer
+        required: true
+        schema:
+          type: number
+  /envelopes/{name}/add/{amount}:
+    summary: Entry point for singular envelopes object
+    put:
+      summary: add amount to envelope
+      description: rename envelope
+      operationId: put_add_envelope
+      responses:
+        '200':
+          description: amount modified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envelope'
+        '500':
+          description: amount not modified.
+    parameters:
+      - name: name
+        in: path
+        description: name of the source envelope
+        required: true
+        schema:
+          type: string
+      - name: amount
+        in: path
+        description: amount to transfer
+        required: true
+        schema:
+          type: number
+  /envelopes/{name}/remove/{amount}:
+    summary: Entry point for singular envelopes object
+    put:
+      summary: remove amount to envelope
+      description: rename envelope
+      operationId: put_remove_envelope
+      responses:
+        '200':
+          description: amount modified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/envelope'
+        '500':
+          description: amount not modified.
+    parameters:
+      - name: name
+        in: path
+        description: name of the source envelope
+        required: true
+        schema:
+          type: string
+      - name: amount
+        in: path
+        description: amount to transfer
+        required: true
+        schema:
+          type: number
+components:
+  schemas:
+    envelope:
+      type: object
+      properties:
+        name:
+          type: string
+        amount:
+          type: number
+          format: float
