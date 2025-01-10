@@ -30,31 +30,6 @@ class DbManipulation {
         this.disconnect();
         return true;
     }
-    async changeEnvelopeName(oldName, newName) {
-        this.connect();
-        const result = await this.client.query(`UPDATE envelope SET name = $2::text WHERE name = $1::text`, [oldName, newName]);
-        this.disconnect();
-        return true;
-    }
-    async addAmount(name, amount) {
-        this.connect();
-        const result = await this.client.query(`UPDATE envelope SET amount = amount + $2::numeric WHERE name = $1::text`, [name, amount]);
-        this.disconnect();
-        return true;
-    }
-    async removeAmount(name, amount) {
-        this.connect();
-        const result = await this.client.query(`UPDATE envelope SET amount = amount - $2::numeric WHERE name = $1::text`, [name, amount]);
-        this.disconnect();
-        return true;
-    }
-    async transferAmount(from, to, amount) {
-        this.connect();
-        const result1 = await this.client.query(`UPDATE envelope SET amount = amount - $2::numeric WHERE name = $1::text`, [from, amount]);
-        const result2 = await this.client.query(`UPDATE envelope SET amount = amount + $2::numeric WHERE name = $1::text`, [to, amount]);
-        this.disconnect();
-        return true;
-    }
     async removeEnvelope(name) {
         this.connect();
         const result = await this.client.query(`DELETE FROM envelope WHERE name = $1:name`,[name])
@@ -66,6 +41,16 @@ class DbManipulation {
         const result = await this.client.query(`SELECT * FROM envelope`);
         this.disconnect();
         return result.rows;
+    }
+    async updateEnvelope(id ,name, amount = null) {
+        this.connect();
+        if (amount === null) {
+            const result = await this.client.query(`UPDATE envelope SET name = $2::text WHERE id = $1`, [id, name]);
+        }else {
+            const result = await this.client.query(`UPDATE envelope SET amount = $3::numeric, name = $2::text WHERE id = $1`, [id, name, amount]);
+        }
+        this.disconnect();
+        return true;
     }
 }
 
