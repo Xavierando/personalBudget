@@ -22,6 +22,9 @@ class DbManipulation {
         this.connect();
         const result = await this.client.query(`SELECT * FROM envelope WHERE name = $1::text`, [name]);
         this.disconnect();
+        if(result.rows.length === 0) {
+            return false;
+        }
         return result.rows[0];
     }
     async createNewEnvelope(name, amount) {
